@@ -10,7 +10,7 @@ async function connect() {
     .connect(dbUri, {
       // useNewUrlParser: true,
       // useUnifiedTopology: true,
-      dbName: 'lasverg'
+      dbName: 'lsvrg-vault'
     })
     .then(async () => {
       log.info('Database connected')
@@ -22,7 +22,7 @@ async function connect() {
       // await User.syncIndexes();
     })
     .catch((error: Error) => {
-      log.error('DB error', error)
+      log.error(error, 'DB connection error')
       process.exit(1)
     })
 }

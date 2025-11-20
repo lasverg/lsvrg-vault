@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Lasverg Service Core API",
+    "name": "Lasverg Vault Service APIs",
     "description": "Backend API for lasverg.io service",
     "version": "0.0.1",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"

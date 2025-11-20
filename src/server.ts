@@ -40,7 +40,7 @@ app.use(mongoSanitize())
 
 app.get('/health', (req, res) => {
   const client = req.get('user-agent')
-  log.info('req', client)
+  log.info({ userAgent: client }, 'Health check')
   res.send('Server is up')
 })
 

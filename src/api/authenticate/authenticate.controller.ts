@@ -19,7 +19,7 @@ export async function signinHandler(
 
     // create session
     const session = await createSession({
-      user: user.id as string,
+      user: user.id,
       userAgent: client.agent.browser.name,
       valid: true
     })

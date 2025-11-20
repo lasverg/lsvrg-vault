@@ -98,3 +98,15 @@ export async function getUserByUsername(
     throw error
   }
 }
+
+// Get user by ID
+export async function getUserById(
+  userId: string
+): Promise<IUserDocument | null> {
+  try {
+    const user = await User.findById(userId)
+    return user
+  } catch (error) {
+    throw error
+  }
+}

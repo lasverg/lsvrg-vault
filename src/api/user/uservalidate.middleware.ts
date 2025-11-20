@@ -15,7 +15,7 @@ export const userRequestValidator = async (
   const user = req.body
   try {
     const isValid = await validateNewUser(user)
-    log.info('isValid', isValid)
+    log.info({ isValid }, 'User validation completed')
     if (isValid) {
       return next()
     }

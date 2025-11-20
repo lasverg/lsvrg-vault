@@ -4,6 +4,7 @@ import { AuthError } from '@errors/api.error.js'
 import { IProtectedRequest } from '@/types/index.js'
 import { IAuthenticatedUser } from '@/types/user.js'
 import { getSession } from '@api/authenticate/session.service.js'
+import { getUserById } from '@api/user/user.service.js'
 
 export async function isAuthenticate(
   req: IProtectedRequest,
@@ -19,8 +20,9 @@ export async function isAuthenticate(
   const token = authorization?.replace('Bearer ', '')
 
   try {
-    const decode = jwt.verifyToken(token)
-    req.user = decode as IAuthenticatedUser
+    const decode = jwt.verifyToken(token) as any
+    // Token structure is { data: { user: {...} } }
+    req.user = decode.data?.user || (decode as IAuthenticatedUser)
     return next()
   } catch (err) {
     next(err)
@@ -64,11 +66,17 @@ export async function cookieAuth(
         }
 
         // Get user from session and set in request
-        req.user = session.user as IAuthenticatedUser
+        const user = await getUserById(session.user.toString())
+        if (!user) {
+          return next(new AuthError('User not found', 404))
+        }
+
+        const { password, ...userWithoutPassword } = user.toJSON()
+        req.user = userWithoutPassword as IAuthenticatedUser
 
         // Generate new access token
         const newAccessToken = await jwt.signToken({
-          user: session.user
+          user: userWithoutPassword
         } as object)
 
         // Set new access token as cookie
